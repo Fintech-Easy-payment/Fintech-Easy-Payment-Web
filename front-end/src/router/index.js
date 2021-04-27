@@ -22,8 +22,13 @@ const router = new VueRouter({
     },
     {
       path: '/payment',
-      name: 'AuthMain',
+      name: 'PaymentMain',
       component: () => import('../components/payment/openBanking.vue')
+    },
+    {
+      path: '/payment-result',
+      name: 'PaymentResult',
+      component: () => import('../components/payment/paymentResult.vue')
     },
 
     { path: "*", component: NotFound },

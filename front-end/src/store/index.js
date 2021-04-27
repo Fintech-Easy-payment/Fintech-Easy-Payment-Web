@@ -26,7 +26,7 @@ export const store = new Vuex.Store({
         email,
         phonenumber
       } = payload
-      console.log("hi")
+
       dbApi.login(payload)
         .then(({ data }) => commit("LOGIN", data))
       console.log(name, password, email, phonenumber)

@@ -1,0 +1,26 @@
+{
+  "name": "fintech-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd back-end && nodemon server.js",
+    "dev:frontend": "cd front-end && "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fintech-Easy-payment/fintech-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fintech-Easy-payment/fintech-project/issues"
+  },
+  "homepage": "https://github.com/Fintech-Easy-payment/fintech-project#readme",
+  "dependencies": {
+    "concurrently": "^6.0.2",
+    "express.js": "^1.0.0",
+    "nodemon": "^2.0.7"
+  }
+}

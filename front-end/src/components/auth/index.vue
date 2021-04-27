@@ -6,7 +6,7 @@
           <v-layout align-center="align-center" justify-center="justify-center">
             <v-flex class="login-form text-xs-center"> 
               <div class="display-1 mb-3">
-                MyWorkspace
+                Easy Payment Service
               </div>
               <v-card light="light">
                 <v-card-text>
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-// import router from "@/router";
+import router from "@/router";
 import { mapActions } from 'vuex'
 
 
@@ -139,10 +139,10 @@ export default {
         }
         this.$store
           .dispatch("handleSignup", payload)
-          .catch(({ message }) => (this.msg = message))
         this.options.isLoggingIn = true
       },
       async handleSignIn () {
+        router.push("/payment")
         
         // // user 정보 보내기
         // const payload = {
@@ -154,7 +154,6 @@ export default {
         // try {
         //   const result = await this.handleLogin(payload)
         //   console.log(result)
-        //   // router.push("/payment")
         // } catch(error){
         //   console.log(error)
         // }

@@ -13,7 +13,7 @@
                     readonly
                   />
                   <v-select
-                    :items="withdrawNum"
+                    :items="withdrawList"
                     :value="selectedValue"
                     label="출금계좌"
                     class="payment__field--block"

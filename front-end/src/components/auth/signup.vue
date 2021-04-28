@@ -70,6 +70,27 @@
             </v-layout>
         </v-container>
       </v-main>
+      <div 
+        class="error-dialog"
+      >
+        <BaseDialog
+          :is-dialog-open="options.isOpenError"
+        >
+          <template #content>
+            <div>
+              이미 가입된 정보입니다.
+            </div>
+          </template>
+          <template #footer>
+            <div
+              @click="options.isOpenError = false"
+            >
+              확인
+            </div>
+          </template>
+        </BaseDialog>
+
+      </div>
     </v-app>
   </div>
 </template>
@@ -80,6 +101,9 @@ import { mapActions } from 'vuex'
 
 
 export default {
+    components: {
+      BaseDialog: () => import('../common/baseDialog'),
+    },
     data: () => ({
         user: {
             email: '',
@@ -88,7 +112,6 @@ export default {
             phone: '',
         },
         options: {
-            isLoggingIn: true,
             isEmptyFeild: false,
             isOpenError: false,
             hasError: false,
@@ -124,18 +147,21 @@ export default {
           email: this.user.email,
           phone: this.user.phone,
         }
-        this.$store
-          .dispatch("handleSignup", payload)
-        this.options.isLoggingIn = true
+        const result = await this.$store.dispatch("handleSignup", payload)
+        if (result == 0) {
+          this.options.isOpenError = true
+        }
       },
       handleCertificate() {
-        this.$store.dispatch("getToken")
-        var apiKey = "89358db6-c434-40fe-9ae2-a2254dc1506a"
+        // this.$router.push('/authResult')
+        const apiKey = "89358db6-c434-40fe-9ae2-a2254dc1506a"
         //#자기 키로 변경
-        var tmpWindow = window.open("about:blank");
-        tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id="+apiKey+"&redirect_uri=http://localhost:3000/authResult&scope=login inquiry transfer&state=12345678901234567890123456789012&auth_type=0"
+        const tmpWindow = window.open("about:blank");
+        tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id="+apiKey+"&redirect_uri=http://localhost:8080/authResult&scope=login inquiry transfer&state=12345678901234567890123456789012&auth_type=0"
+
         this.options.hasCertificated = true
-      }
+
+      },
     },
 
 }

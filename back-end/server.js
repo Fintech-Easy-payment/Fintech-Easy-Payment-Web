@@ -12,13 +12,36 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'fintech'
-});
-connection.connect();
+var connection;
+
+if (process.env.NODE_ENV == 'production'){
+  var db_config = {
+    host: 'us-cdbr-east-03.cleardb.com',
+    post: 3306,
+    user: 'bc44916151566b',
+    password: '9c011805',
+    database: 'heroku_2fef9e1d5161af5'
+  }
+  connection = mysql.createPool(db_config);
+}
+
+else{
+  var db_config = {
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'fintech'
+  }
+  connection = mysql.createConnection(db_config);
+}
+
+if (process.env.NODE_ENV == 'production') {
+  app.use(express.static(path.join(__dirname, '../back-end/public')));
+
+  app.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  });
+}
 
 app.post('/authTest', auth, function (req, res) {
   res.json(req.decoded);

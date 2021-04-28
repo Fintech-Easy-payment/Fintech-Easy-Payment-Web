@@ -15,49 +15,30 @@
                       v-if="options.isLoggingIn"
                       v-text="'Log in to your customer portal'"
                       />
-                    <div 
-                      v-else
-                      v-text="'Crate a new account'"
-                    />
                   </div>
                   <v-form>
                     <v-text-field 
-                      v-if="!options.isLoggingIn" 
-                      v-model="user.name" 
-                      light="light" 
-                      label="Name"
-                    />
-                    <v-text-field 
-                      v-if="!options.isLoggingIn" 
-                      v-model="user.phone" 
-                      light="light" 
-                      label="Phone"
-                    />
-                    <v-text-field 
                       v-model="user.email" 
+                      :rules="feildRule"
                       light="light"  
                       label="Email" 
                       type="email"
+                      required
                     />
                     <v-text-field 
                       v-model="user.password" 
+                      :rules="feildRule"
                       light="light"  
                       label="Password" 
                       type="password"
+                      required
                     />
                     <v-btn 
-                      v-if="options.isLoggingIn" 
                       v-text="'Sign in'"
+                      :disabled="!isVaildFeild"
                       @click.prevent="handleSignIn()" 
                       block="block"   
                       type="submit"
-                    />
-                    <v-btn 
-                      v-else 
-                      v-text="'Sign up'"
-                      block="block" 
-                      type="submit" 
-                      @click.prevent="handleSignUp()"
                     />
                   </v-form>
                 </v-card-text>
@@ -75,28 +56,35 @@
                   class="signup-button" 
                   v-text="'Sign up'"
                   light="light" 
-                  @click="options.isLoggingIn = false"
+                  @click="$router.push('/signup')"
                 />
               </div>
-              <div 
-                v-else
-                class="login-options"
-              >
-                <div 
-                  class="question"
-                  v-text="'Do have an account?'"
-                />
-                <v-btn 
-                  class="signup-button" 
-                  v-text="'Sign in'"
-                  light="light" 
-                  @click="options.isLoggingIn = true"
-                />
-              </div>
+              
             </v-flex>
           </v-layout>
         </v-container>
       </v-main>
+      <div 
+        class="error-dialog"
+      >
+        <BaseDialog
+          :is-dialog-open="options.isOpenError"
+        >
+          <template #content>
+            <div>
+              이메일과 비밀번호를 확인해 주세요.
+            </div>
+          </template>
+          <template #footer>
+            <div
+              @click="options.isOpenError = false"
+            >
+              확인
+            </div>
+          </template>
+        </BaseDialog>
+
+      </div>
 
       <v-footer app="app">
         <v-flex class="text-xs-center">© fintech project.</v-flex>
@@ -112,53 +100,54 @@ import { mapActions } from 'vuex'
 
 
 export default {
+    components: {
+      BaseDialog: () => import('../common/baseDialog'),
+      // SubmitButton: () => import('../common/SubmitButton'),
+    },
     data: () => ({
         user: {
             email: '',
             password: '',
-            name: '',
-            phone: '',
         },
         options: {
             isLoggingIn: true,
-            shouldStayLoggedIn: true,
-        },
-  
+            isEmptyFeild: false,
+            isOpenError: false,
+            hasError: false,
+        },  
     }),
+    computed: {
+      feildRule () {
+        const errorMessage = 'This field is required'
+        return [val => (val || '').length > 0 || errorMessage]
+      },
+      isVaildFeild(){
+        return (this.user.email && this.user.password)
+      }
+      
+    },
     methods: {
       ...mapActions([
-      'handleSignup',
+      'handleSignin',
     ]),
-      async handleSignUp () {
-        //user 정보 보내기
+      async handleSignIn () {
+        if (!this.feildRule) {
+          this.options.hasError = true
+        }
         const payload = {
-          name: this.user.name,
           password: this.user.password,
           email: this.user.email,
-          phone: this.user.phone,
+        };
+        const result = await this.$store.dispatch("handleSignin", payload)
+        console.log(result);
+        if (result !== 0) {
+          this.options.isOpenError = true
+        } else {
+          router.push("/payment")
         }
-        this.$store
-          .dispatch("handleSignup", payload)
-        this.options.isLoggingIn = true
       },
-      async handleSignIn () {
-        router.push("/payment")
-        
-        // // user 정보 보내기
-        // const payload = {
-        //   name: this.user.name,
-        //   password: this.user.password,
-        //   email: this.user.email,
-        //   phonenumber: this.user.phone,
-        // };
-        // try {
-        //   const result = await this.handleLogin(payload)
-        //   console.log(result)
-        // } catch(error){
-        //   console.log(error)
-        // }
-
-      },
+      handleError() {
+      }
     },
 
 }

@@ -13,12 +13,12 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'Home',
-      component: () => import('../components')
+      component: () => import('../components/auth')
     },
     {
-      path: '/auth',
+      path: '/signup',
       name: 'AuthMain',
-      component: () => import('../components/auth')
+      component: () => import('../components/auth/signup.vue')
     },
     {
       path: '/payment',
@@ -29,6 +29,11 @@ const router = new VueRouter({
       path: '/payment-result',
       name: 'PaymentResult',
       component: () => import('../components/payment/paymentResult.vue')
+    },
+    {
+      path: '/authResult',
+      name: 'authResult',
+      component: () => import('../components/auth/certificationResult.vue')
     },
 
     { path: "*", component: NotFound },

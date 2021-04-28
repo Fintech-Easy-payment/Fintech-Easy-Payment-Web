@@ -135,7 +135,7 @@ export default {
           name: this.user.name,
           password: this.user.password,
           email: this.user.email,
-          phonenumber: this.user.phone,
+          phone: this.user.phone,
         }
         this.$store
           .dispatch("handleSignup", payload)

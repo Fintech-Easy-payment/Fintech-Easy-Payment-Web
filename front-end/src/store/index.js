@@ -6,8 +6,6 @@ import { dbApi } from '../api'
 // import Cookies from 'js-cookie'
 Vue.use(Vuex)
 
-// const endpoints = "localhost"
-
 export const store = new Vuex.Store({
   state: {
     accessToken: null,
@@ -24,12 +22,12 @@ export const store = new Vuex.Store({
         name,
         password,
         email,
-        phonenumber
+        phone
       } = payload
 
-      dbApi.login(payload)
+      dbApi.signup(payload)
         .then(({ data }) => commit("LOGIN", data))
-      console.log(name, password, email, phonenumber)
+      console.log(name, password, email, phone)
     }
   },
 })

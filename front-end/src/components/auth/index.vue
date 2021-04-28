@@ -72,7 +72,7 @@
         >
           <template #content>
             <div>
-              중복된 이메일입니다.
+              이메일과 비밀번호를 확인해 주세요.
             </div>
           </template>
           <template #footer>
@@ -108,8 +108,6 @@ export default {
         user: {
             email: '',
             password: '',
-            name: '',
-            phone: '',
         },
         options: {
             isLoggingIn: true,
@@ -133,24 +131,20 @@ export default {
       'handleSignin',
     ]),
       async handleSignIn () {
-        router.push("/payment")
         if (!this.feildRule) {
           this.options.hasError = true
         }
-        // // user 정보 보내기
-        // const payload = {
-        //   name: this.user.name,
-        //   password: this.user.password,
-        //   email: this.user.email,
-        //   phonenumber: this.user.phone,
-        // };
-        // try {
-        //   const result = await this.handleLogin(payload)
-        //   console.log(result)
-        // } catch(error){
-        //   console.log(error)
-        // }
-
+        const payload = {
+          password: this.user.password,
+          email: this.user.email,
+        };
+        const result = await this.$store.dispatch("handleSignin", payload)
+        console.log(result);
+        if (result !== 0) {
+          this.options.isOpenError = true
+        } else {
+          router.push("/payment")
+        }
       },
       handleError() {
       }

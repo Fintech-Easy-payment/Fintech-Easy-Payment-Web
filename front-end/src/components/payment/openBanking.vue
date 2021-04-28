@@ -12,11 +12,12 @@
                     class="payment__field--block"
                     readonly
                   />
-                  <v-text-field
-                    :value=withdrawNum
+                  <v-select
+                    :items="withdrawNum"
+                    :value="selectedValue"
                     label="출금계좌"
                     class="payment__field--block"
-                    readonly
+                    @change="handleSelect($event)"
                   />
                   <v-text-field
                     :value=amount
@@ -49,19 +50,44 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'paymentPage',
   data: () => ({
     product: '3개월권',
-    withdrawNum: '12341234',
+    withdrawList: ['12341234','98798723'],
     amount: '1000',
     depositNum: '98769876',
+    selectedValue: null,
   }),
+  mounted() {
+    this.getPaymentData()
+  },
   methods: {
+    ...mapActions(['getUserData','postPaymentData']),
+    async getPaymentData(){
+      const result = await this.$store.dispatch("getUserData")
+      this.product = result.product
+      this.withdrawList = result.withdraw
+      this.amount = result.amount
+      this.depositNum = result.depositNum
+    },
     handlePayment(){
       console.log('a');
       //출금 open api
-    }
+      const payload = {
+        withdrawNum :this.selectedValue
+      }
+      this.$store.dispatch('postPaymentData',payload)
+
+      
+    },
+    handleSelect (value) {
+      this.selectedValue = value
+      // this.$emit('change', value)
+      console.log(this.selectedValue)
+    },
   },
 
 }

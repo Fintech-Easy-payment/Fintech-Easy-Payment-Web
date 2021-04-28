@@ -48,7 +48,7 @@ app.post('/api/signup', (req, res) => {
 
 app.post('/api/signin', function (req, res) {
   var email = req.body.email;
-  var prassword = req.body.password;
+  var password = req.body.password;
   console.log(email, password)
   var sql = "SELECT * FROM user WHERE email = ?";
   connection.query(sql, [email], function (err, result) {
@@ -91,43 +91,55 @@ app.post('/api/signin', function (req, res) {
   })
 })
 
-// app.post('/account', auth, function (req, res) {
-//   var user_id = req.decoded.userId;
+app.post('/account', auth, function (req, res) {
+  var user_id = req.decoded.userId;
 
-//   var sql = "SELECT * FROM user WHERE user_id=?"
-//   connection.query(sql, [user_id], function (err, result) {
-//     if (err) {
-//       console.error(err);
-//       throw err;
-//     }
-//     else {
-//       console.log(result);
-//       var option = {
-//         method: "GET",
-//         url: "https://openapi.openbanking.or.kr/v2.0/account/list",
-//         headers: {
-//           //Authorization: 'Bearer ' + result[0].access_token,
-//           Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxMTAwNzcwMjAxIiwic2NvcGUiOlsiaW5xdWlyeSIsImxvZ2luIiwidHJhbnNmZXIiXSwiaXNzIjoiaHR0cHM6Ly93d3cub3BlbmJhbmtpbmcub3Iua3IiLCJleHAiOjE2MjczNjE4MTksImp0aSI6ImRiOWMwZmNhLWRhNTEtNGNkZC1iZTU5LTgwMjk2MDBlNDNkNSJ9._gVvQpd3f_ayFjvdvsEhgKyX_IrRU751vbLh6r42Zho',
-//         },
-//         qs: {
-//           //user_seq_no: result[0].user_seqnum,
-//           user_seq_no: 1100770201,
-//           include_cancel_yn: 'Y',
-//           sort_order: 'D'
-//         }
-//       }
-//       request(option, function (err, response, body) {
-//         if (err) {
-//           console.error(err);
-//           throw err;
-//         }
-//         else {
-//           console.log(body);
-//         }
-//       })
-//     }
-//   })
-// })
+  var sql = "SELECT * FROM user WHERE user_id=?"
+  connection.query(sql, [user_id], function (err, result) {
+    if (err) {
+      console.error(err);
+      throw err;
+    }
+    else {
+      console.log(result);
+      var option = {
+        method: "GET",
+        url: "https://testapi.openbanking.or.kr/v2.0/account/list",
+        headers: {
+          Authorization: 'Bearer ' + result[0].access_token
+        },
+        qs: {
+          user_seq_no: result[0].user_seqnum,
+          include_cancel_yn: 'Y',
+          sort_order: 'D'
+        }
+      }
+      request(option, function (err, response, body) {
+        if (err) {
+          console.error(err);
+          throw err;
+        }
+        else {
+          var requestResult = JSON.parse(body);
+          console.log(requestResult);
+          var res_list = requestResult.res_list;
+          res.json(res_list);
+          //var sql = "SELECT * FROM user_product up join product p on up.product_id = p.product_id WHERE user_id=?"
+          // connection.query(sql, [user_id], function(err, result){
+          //   if (err){
+          //     console.error(err);
+          //     throw err;
+          //   }
+          //   else {
+          //     console.log(body.res_list);
+          //     res.json({product: result[0].product_name, price: reusult[0].price});
+          //   }
+          // })
+        }
+      })
+    }
+  })
+})
 
 app.listen(appPort, function () {
   console.log(`********** EXPRESS SERVER is running on port ${appPort} **********`);

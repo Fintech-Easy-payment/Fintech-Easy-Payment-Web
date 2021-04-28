@@ -5,7 +5,6 @@ const appPort = process.env.PORT || 3000;
 var mysql = require('mysql');
 var request = require('request');
 const path = require('path');
-const serveStatic = require('serve-static')
 var jwt = require('jsonwebtoken');
 var auth = require('./lib/auth');
 const cors = require('cors');
@@ -36,7 +35,7 @@ else{
   connection = mysql.createConnection(db_config);
 }
 
-app.use('/', serveStatic(path.join(__dirname, '../front-end/dist')))
+app.use(express.static(path.join(__dirname, '../front-end/dist')));
 
 app.get(/.*/, function (req, res) {
   res.sendFile(path.join(__dirname, '../front-end/dist/index.html'))

@@ -1,0 +1,156 @@
+<template>
+  <div>
+    <v-app dark="dark">
+      <v-main>
+        <v-container fill-height="fill-height">
+          <v-layout align-center="align-center" justify-center="justify-center">
+            <v-form>
+                <div 
+                  v-text="'Crate a new account'"
+                />
+                <v-text-field 
+                  v-model="user.name" 
+                  :rules="feildRule"
+                  light="light" 
+                  label="Name"
+                  required
+                />
+                <v-text-field 
+                  v-model="user.phone" 
+                  :rules="feildRule"
+                  light="light" 
+                  label="Phone"
+                  required
+                />
+                <v-text-field 
+                  v-model="user.email" 
+                  :rules="feildRule"
+                  light="light"  
+                  label="Email" 
+                  type="email"
+                  required
+                />
+                <v-text-field 
+                  v-model="user.password" 
+                  :rules="feildRule"
+                  light="light"  
+                  label="Password" 
+                  type="password"
+                  required
+                />
+                <v-btn 
+                  v-text="'Certificate'"
+                  class="signup-button"
+                  :disabled="!isVaildFeild"
+                  block="block" 
+                  @click="handleCertificate()"
+                />
+                <v-btn 
+                  v-text="'Sign up'"
+                  class="signup-button"
+                  :disabled="!isVaildSignup"
+                  block="block" 
+                  type="submit" 
+                  @click.prevent="handleSignUp()"
+                />
+                <div 
+                class="login-options"
+              >
+                <div 
+                  class="question"
+                  v-text="'Do have an account?'"
+                />
+                <v-btn 
+                  v-text="'Sign in'"
+                  light="light" 
+                  @click="$router.push('/')"
+                />
+              </div>
+              </v-form>
+            </v-layout>
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+</template>
+
+<script>
+// import router from "@/router";
+import { mapActions } from 'vuex'
+
+
+export default {
+    data: () => ({
+        user: {
+            email: '',
+            password: '',
+            name: '',
+            phone: '',
+        },
+        options: {
+            isLoggingIn: true,
+            isEmptyFeild: false,
+            isOpenError: false,
+            hasError: false,
+            hasCertificated: false,
+        },  
+    }),
+    computed: {
+      feildRule () {
+        const errorMessage = 'This field is required'
+        return [val => (val || '').length > 0 || errorMessage]
+      },
+      isVaildFeild(){
+        return (this.user.name && this.user.email && this.user.password && this.user.phone)
+      },
+      isVaildSignup(){
+        return this.options.hasCertificated && this.isVaildFeild
+      }
+      
+    },
+    methods: {
+      ...mapActions([
+      'handleSignup',
+      'getToken',
+    ]),
+      async handleSignUp () {
+        if (!this.isVaildFeild) {
+          this.options.hasError = true
+        }
+        //user 정보 보내기
+        const payload = {
+          name: this.user.name,
+          password: this.user.password,
+          email: this.user.email,
+          phone: this.user.phone,
+        }
+        this.$store
+          .dispatch("handleSignup", payload)
+        this.options.isLoggingIn = true
+      },
+      handleCertificate() {
+        this.$store.dispatch("getToken")
+        var apiKey = "89358db6-c434-40fe-9ae2-a2254dc1506a"
+        //#자기 키로 변경
+        var tmpWindow = window.open("about:blank");
+        tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id="+apiKey+"&redirect_uri=http://localhost:3000/authResult&scope=login inquiry transfer&state=12345678901234567890123456789012&auth_type=0"
+        this.options.hasCertificated = true
+      }
+    },
+
+}
+</script>
+
+<style lang="scss" scoped>
+.signup-button {
+  margin-bottom: 1rem;
+}
+
+.login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+}
+
+</style>

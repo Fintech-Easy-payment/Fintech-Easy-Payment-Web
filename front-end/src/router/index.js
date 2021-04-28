@@ -13,12 +13,12 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'Home',
-      component: () => import('../components')
+      component: () => import('../components/auth')
     },
     {
-      path: '/auth',
+      path: '/signup',
       name: 'AuthMain',
-      component: () => import('../components/auth')
+      component: () => import('../components/auth/signup.vue')
     },
     {
       path: '/payment',

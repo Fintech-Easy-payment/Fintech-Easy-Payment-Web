@@ -6,6 +6,5 @@ module.exports = {
         changeOrigin: true
       } 
     } 
-  },
-  outputDir: '../back-end/public',
+  }
 }

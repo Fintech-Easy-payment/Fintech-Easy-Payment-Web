@@ -5,6 +5,7 @@ const appPort = process.env.PORT || 3000;
 var mysql = require('mysql');
 var request = require('request');
 const path = require('path');
+const serveStatic = require('serve-static')
 var jwt = require('jsonwebtoken');
 var auth = require('./lib/auth');
 const cors = require('cors');
@@ -35,13 +36,11 @@ else{
   connection = mysql.createConnection(db_config);
 }
 
-if (process.env.NODE_ENV == 'production') {
-  app.use(express.static(path.join(__dirname, '../back-end/public')));
+app.use('/', serveStatic(path.join(__dirname, '../front-end/dist')))
 
-  app.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'));
-  });
-}
+app.get(/.*/, function (req, res) {
+  res.sendFile(path.join(__dirname, '../front-end/dist/index.html'))
+ })
 
 app.post('/authTest', auth, function (req, res) {
   res.json(req.decoded);

@@ -30,6 +30,11 @@ const router = new VueRouter({
       name: 'PaymentResult',
       component: () => import('../components/payment/paymentResult.vue')
     },
+    {
+      path: '/authResult',
+      name: 'authResult',
+      component: () => import('../components/auth/certificationResult.vue')
+    },
 
     { path: "*", component: NotFound },
   ],

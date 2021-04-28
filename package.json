@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd backend && node server.js",
-    "heroku-postbuild": "cd client && npm install && npm run build",
+    "start": "cd back-end && node server.js",
+    "heroku-postbuild": "cd front-end && npm install && npm run build",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd back-end && nodemon server.js",
     "dev:frontend": "cd front-end && npm run serve"

@@ -90,8 +90,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-
-
 export default {
     components: {
       BaseDialog: () => import('../common/baseDialog'),
@@ -144,17 +142,8 @@ export default {
           this.$router.push('/certification')
         }
       },
-
-      handleCertificate() {
-        // this.$router.push('/authResult')
-        const apiKey = "89358db6-c434-40fe-9ae2-a2254dc1506a"
-        //#자기 키로 변경
-        const tmpWindow = window.open("about:blank");
-        tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id="+apiKey+"&redirect_uri=https://finextend.herokuapp.com/authResult&scope=login inquiry transfer&state=12345678901234567890123456789012&auth_type=0"
-
-        this.options.hasCertificated = true
+      
     },
-
 }
 </script>
 
@@ -162,12 +151,10 @@ export default {
 .signup-button {
   margin-bottom: 1rem;
 }
-
 .login-options {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   margin-top: 1rem;
 }
-
 </style>

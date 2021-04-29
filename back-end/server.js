@@ -60,13 +60,41 @@ app.post('/api/signup', (req, res) => {
     }
     else {
       res.json(1) // 회원가입 성공
+      
+      var sql = "SELECT * from user WHERE phone=?"
+      connection.query(sql, [phone], function(err, result){
+        if (err) {
+          console.error(err);
+          res.json(0); // 회원가입 실패
+          throw err;
+        }
+        else {
+          var tokenKey = "f@i#n%tne#ckfhlafkd0102test!@#%"
+          jwt.sign(
+            {
+              userId: result[0].user_id,
+              userEmail: result[0].email
+            },
+            tokenKey,
+            {
+              expiresIn: '10d',
+              issuer: 'fintech.admin',
+              subject: 'user.login.info'
+            },
+            function (err, token) {
+              console.log(token)
+              res.json(token) // 로그인 성공 -> sessionStorage에 token 저장
+            }
+          )
+        }
+      })
     }
   })
 })
 
 app.post('/api/token', auth, (req, res) => {
   var user_id = req.decoded.userId;
-  let code = req.body.code;
+  var code = req.body.code;
   console.log(code);
   var option = {
     method: "POST",
@@ -186,6 +214,7 @@ app.post('/api/account', auth, function (req, res) {
           var account_result = new Object();
           account_result.account_list =[]
           
+          console.log(res_list)
           for(i=0;i<res_list.length;i++){
             res_one = res_list[i]
             account_result.account_list.push({
@@ -202,10 +231,10 @@ app.post('/api/account', auth, function (req, res) {
               throw err;
             }
             else {
-              console.log(result)
-              account_result.product_name = result[0].product_name
-              account_result.product_price = result[0].price
-
+              //console.log(result)
+              //acoount_result.product_id = result[0].product_id;
+              account_result.product_name = result[0].product_name;
+              account_result.product_price = result[0].price;
               res.json(account_result);
             }
           })
@@ -215,59 +244,132 @@ app.post('/api/account', auth, function (req, res) {
   })
 })
 
+// app.post('/api/withdraw', auth, function (req, res) {
+//   var user_id = req.decoded.userId;
+//   var fin_use_num = req.body.fin_use_num; // 고객이 선택한 계좌의 fin_use_num
+
+//   var countnum = Math.floor(Math.random() * 1000000000) + 1;
+//   var transId = "T991599190U" + countnum; //이용기관번호
+
+//   var sql = "SELECT * FROM user WHERE id = ?"
+//   connection.query(sql, [user_id], function (err, result) {
+//     if (err) {
+//       console.error(err);
+//       throw err
+//     }
+//     else {
+//       console.log(result);
+//       var option = {
+//         method: "POST",
+//         url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
+//         headers: {
+//           Authorization: 'Bearer ' + result[0].accesstoken,
+//           "Content-Type": "application/json"
+//         },
+//         json: {
+//           "bank_tran_id": transId,
+//           "cntr_account_type": "N",
+//           "cntr_account_num": "7832932596",
+//           "dps_print_content": "쇼핑몰환불",
+//           "fintech_use_num": fin_use_num,
+//           "wd_print_content": "오픈뱅킹출금",
+//           "tran_amt": "1000",
+//           "tran_dtime": "20200424131111",
+//           "req_client_name": "홍길동",
+//           "req_client_fintech_use_num": "199159919057870971744807",
+//           "req_client_num": "HONGGILDONG1234",
+//           "transfer_purpose": "TR",
+//           "recv_client_name": "진상언",
+//           "recv_client_bank_code": "097",
+//           "recv_client_account_num": "7832932596"
+//         }
+//       }
+//       request(option, function (err, response, body) {
+//         if (err) {
+//           console.error(err);
+//           throw err;
+//         }
+//         else {
+//           console.log(body);
+//           if (body.rsp_code == 'A0000') {
+//             res.json(1)
+//           }
+//         }
+//       })
+//     }
+//   })
+// })
+
 app.post('/api/withdraw', auth, function (req, res) {
-  var user_id = req.decoded.userId;
-  var fin_use_num = req.body.fin_use_num; // 고객이 선택한 계좌의 fin_use_num
+  // fin 넘버 , 출금 계좌 , 금액 , 
+  var userId = req.decoded.userId;
+  var fin_use_num = req.body.fin_use_num;
+  var price = req.body.price;
+  var prodcutId = req.body.prodcut_id;
+  var productName = req.body.prodcut_name;
 
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
-  var transId = "T991599190U" + countnum; //이용기관번호
-
+  // todo : transId 변경 
+  var transId = "T991599190U" + countnum; // 이용기과번호 본인것 입력
+  var now = new Date();
   var sql = "SELECT * FROM user WHERE id = ?"
-  connection.query(sql, [user_id], function (err, result) {
-    if (err) {
-      console.error(err);
-      throw err
-    }
-    else {
-      console.log(result);
-      var option = {
-        method: "POST",
-        url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
-        headers: {
-          Authorization: 'Bearer ' + result[0].accesstoken,
-          "Content-Type": "application/json"
-        },
-        json: {
-          "bank_tran_id": transId,
-          "cntr_account_type": "N",
-          "cntr_account_num": "7832932596",
-          "dps_print_content": "쇼핑몰환불",
-          "fintech_use_num": fin_use_num,
-          "wd_print_content": "오픈뱅킹출금",
-          "tran_amt": "1000",
-          "tran_dtime": "20200424131111",
-          "req_client_name": "홍길동",
-          "req_client_fintech_use_num": "199159919057870971744807",
-          "req_client_num": "HONGGILDONG1234",
-          "transfer_purpose": "TR",
-          "recv_client_name": "진상언",
-          "recv_client_bank_code": "097",
-          "recv_client_account_num": "7832932596"
-        }
-      }
-      request(option, function (err, response, body) {
-        if (err) {
+
+  connection.query(sql,[userId], function(err , result){
+      if(err){
           console.error(err);
-          throw err;
-        }
-        else {
-          console.log(body);
-          if (body.rsp_code == 'A0000') {
-            res.json(1)
+          throw err
+      }
+      else {
+          //console.log(result);
+          var option = {
+              method : "POST",
+              url : "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
+              headers : {
+                  Authorization : 'Bearer ' + result[0].accesstoken,
+                  "Content-Type" : "application/json"
+              },
+              json : {
+                  "bank_tran_id": transId,
+                  "cntr_account_type": "N",
+                  // todo : 약정 계좌 번호 
+                  "cntr_account_num": "7832932596",
+                  "dps_print_content": "이용권연장",
+                  "fintech_use_num": fin_use_num,
+                  "tran_amt": price,
+                  "tran_dtime": now.format("%Y%m%d%H%M%S"),//"20200424131111",
+                  "req_client_name": "홍길동",
+                  "req_client_num": "HONGGILDONG1234",
+                  "transfer_purpose": "TR",
+                  
+              }
           }
-        }
-      })
-    }
+          request(option, function(err, response, body){
+              if(err){
+                  console.error(err);
+                  throw err;
+              }
+              else {
+                  console.log(body);
+
+                  var sql = "INSERT INTO user_product (user_id, prodcut_id, start_date, end_date) VALUES (?,?,?,?)"
+                  var oneMonthLater = new Date(now.setMonth(now.getMonth() + 1))
+                  
+                  connection.query(sql,[userId, prodcutId, now.format("%Y-%m-%d") , oneMonthLater].format("%Y-%m-%d"), function(err , result){
+                      if(err){
+                          console.error(err);
+                          throw err
+                      }
+                      // else {}
+                      else{
+                          if(body.rsp_code == 'A0000'){
+                              res.json(1)
+                          }
+                      }
+                  })
+                 
+              }
+          })
+      }
   })
 })
 

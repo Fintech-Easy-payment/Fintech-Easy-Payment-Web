@@ -14,26 +14,26 @@ app.use(express.urlencoded({ extended: false }));
 
 var connection;
 
-if (process.env.NODE_ENV == 'production') {
-  var db_config = {
-    host: 'us-cdbr-east-03.cleardb.com',
-    post: 3306,
-    user: 'bc44916151566b',
-    password: '9c011805',
-    database: 'heroku_2fef9e1d5161af5'
-  }
-  connection = mysql.createPool(db_config);
+// if (process.env.NODE_ENV == 'production') {
+var db_config = {
+  host: 'us-cdbr-east-03.cleardb.com',
+  post: 3306,
+  user: 'bc44916151566b',
+  password: '9c011805',
+  database: 'heroku_2fef9e1d5161af5'
 }
+connection = mysql.createPool(db_config);
 
-else {
-  var db_config = {
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'fintech'
-  }
-  connection = mysql.createConnection(db_config);
-}
+
+// else {
+//   var db_config = {
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'root',
+//     database: 'fintech'
+//   }
+//   connection = mysql.createConnection(db_config);
+// }
 
 app.use(express.static(path.join(__dirname, '../front-end/dist')));
 
@@ -182,6 +182,8 @@ app.post('/api/signin', function (req, res) {
 app.post('/api/account', auth, function (req, res) {
   var user_id = req.decoded.userId;
 
+  console.log(user_id);
+
   var sql = "SELECT * FROM user WHERE user_id=?"
   connection.query(sql, [user_id], function (err, result) {
     if (err) {
@@ -208,7 +210,7 @@ app.post('/api/account', auth, function (req, res) {
         }
         else {
           var requestResult = JSON.parse(body);
-          var res_list = requestResult.res_list;
+          var res_list = requestResult.res_list | [];
           var account_result = new Object();
           account_result.account_list = []
 
@@ -229,7 +231,7 @@ app.post('/api/account', auth, function (req, res) {
               throw err;
             }
             else {
-              //console.log(result)
+              console.log(result)
               account_result.product_id = result[0].product_id;
               account_result.product_name = result[0].product_name;
               account_result.product_price = result[0].price;

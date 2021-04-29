@@ -278,11 +278,16 @@ app.post('/api/withdraw', auth, function (req, res) {
           "cntr_account_num": "7832932596",
           "dps_print_content": "이용권연장",
           "fintech_use_num": fin_use_num, 
+          "wd_print_content": "오픈뱅킹출금",
           "tran_amt": price,
           "tran_dtime": date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()),//"20200424131111",
           "req_client_name": "홍길동",
+          "req_client_fintech_use_num" : "199159919057870971744807",
           "req_client_num": "HONGGILDONG1234",
           "transfer_purpose": "TR",
+          "recv_client_name": "헬스장",
+          "recv_client_bank_code": "097",
+          "recv_client_account_num": "7832932596"
         }
       }
       request(option, function (err, response, body) {

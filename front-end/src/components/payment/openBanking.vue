@@ -92,9 +92,9 @@ export default {
       'userData',
     ]),
     accountLists() {
-      return this.userData.accountList.map((account) => {
-        return account.accountNum
-      })
+      return this.userData.accountList ? this.userData.accountList.map((account) => {
+        return account.bank_name + " " + account.account_num_masked
+      }) : []
     },
   },
   methods: {
@@ -106,10 +106,9 @@ export default {
       console.log('a');
       //출금 open api
       const accoutDataIndex = this.accountLists.findIndex(option => option === this.selectedValue)
-      console.log();
-      const payload = {
-        account_list : this.userData.accountList[accoutDataIndex]
-      }
+      console.log(accoutDataIndex);
+      const payload = this.userData.accountList[accoutDataIndex].fintech_use_num
+      
       console.log(payload);
       const result = this.$store.dispatch('postPaymentData',payload)
       console.log(result);

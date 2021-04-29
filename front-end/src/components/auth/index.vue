@@ -130,6 +130,7 @@ export default {
     methods: {
       ...mapActions([
       'handleSignin',
+      'getUserData'
     ]),
       async handleSignIn () {
         if (!this.feildRule) {
@@ -148,6 +149,7 @@ export default {
           this.errorMessage = "가입되지 않은 정보입니다."
           this.options.isOpenError = true
         } else {
+          await this.$store.dispatch("getUserData")
           router.push("/payment")
         }
       },

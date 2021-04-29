@@ -247,8 +247,7 @@ app.post('/api/withdraw', auth, function (req, res) {
   var userId = req.decoded.userId;
   var fin_use_num = req.body.fin_use_num;
   var price = req.body.price;
-  var prodcutId = req.body.prodcut_id;
-  var productName = req.body.prodcut_name;
+  var productId = req.body.product_id;
 
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "M202111589" + countnum; // 이용기관번호 본인것 입력
@@ -294,9 +293,9 @@ app.post('/api/withdraw', auth, function (req, res) {
         else {
           console.log(body);
 
-          var sql = "INSERT INTO user_product (user_id, product_id, start_date, end_date) VALUES (?,?,?,?)"
+          var sql = "INSERT INTO user_product (user_id, product_id, start_date, exr_date) VALUES (?,?,?,?)"
           
-          connection.query(sql, [userId, prodcutId, sdate, edate], function (err, result) {
+          connection.query(sql, [userId, productId, sdate, edate], function (err, result) {
             if (err) {
               console.error(err);
               res.json(1) //  DB 에러

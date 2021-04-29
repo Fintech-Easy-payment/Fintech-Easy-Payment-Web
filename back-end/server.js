@@ -102,8 +102,8 @@ app.post('/api/token', auth, (req, res) => {
     },
     form: {
       code: code,
-      client_id: 'q7kH44ThJwjpvNRg0BbJvE1yxvx5X53DKz1rNgPF',
-      client_secret: 'yVT6irMr2h4ZTHzZY7sDpbvhm1nlOzr4nP7DYRVy',
+      client_id: '89358db6-c434-40fe-9ae2-a2254dc1506a',
+      client_secret: '4ada8450-c969-4af7-b622-c605f341f7d6',
       redirect_uri: 'https://finextend.herokuapp.com/authResult',
       grant_type: 'authorization_code'
     }

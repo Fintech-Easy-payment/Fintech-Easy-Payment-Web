@@ -248,9 +248,10 @@ app.post('/api/withdraw', auth, function (req, res) {
   var fin_use_num = req.body.fin_use_num;
   var price = req.body.price;
   var productId = req.body.product_id;
+  console.log(req.body)
 
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
-  var transId = "M202111589" + countnum; // 이용기관번호 본인것 입력
+  var transId = "M202111589" + 'U' + countnum; // 이용기관번호 본인것 입력
   
   function pad2(n) { return n < 10 ? '0' + n : n }
   var date = new Date();
@@ -276,7 +277,7 @@ app.post('/api/withdraw', auth, function (req, res) {
           "cntr_account_type": "N",
           "cntr_account_num": "7832932596",
           "dps_print_content": "이용권연장",
-          "fintech_use_num": fin_use_num,
+          "fintech_use_num": fin_use_num, 
           "tran_amt": price,
           "tran_dtime": date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()),//"20200424131111",
           "req_client_name": "홍길동",

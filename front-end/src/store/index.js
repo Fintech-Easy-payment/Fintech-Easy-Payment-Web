@@ -36,7 +36,7 @@ export const store = new Vuex.Store({
     //   Cookies.set('certification-refresh-token', payload.refresh_token)
     //   Cookies.set('certification-user-seq-num', payload.user_seqnum)
     // },
-    async handleSignup({ state }, payload) {
+    async handleSignup(_, payload) {
       const {
         name,
         password,

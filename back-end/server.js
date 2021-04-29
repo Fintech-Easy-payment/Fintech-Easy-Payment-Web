@@ -282,7 +282,7 @@ app.post('/api/withdraw', auth, function (req, res) {
           "tran_amt": price,
           "tran_dtime": date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()),//"20200424131111",
           "req_client_name": "홍길동",
-          "req_client_fintech_use_num" : "199159919057870971744807",
+          "req_client_fintech_use_num" : "120211158988932126772153",
           "req_client_num": "HONGGILDONG1234",
           "transfer_purpose": "TR",
           "recv_client_name": "헬스장",

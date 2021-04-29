@@ -39,13 +39,6 @@
                   required
                 />
                 <v-btn 
-                  v-text="'Certificate'"
-                  class="signup-button"
-                  :disabled="!isVaildFeild"
-                  block="block" 
-                  @click="handleCertificate()"
-                />
-                <v-btn 
                   v-text="'Sign up'"
                   class="signup-button"
                   :disabled="!isVaildSignup"
@@ -96,7 +89,6 @@
 </template>
 
 <script>
-// import router from "@/router";
 import { mapActions } from 'vuex'
 
 
@@ -127,14 +119,12 @@ export default {
         return (this.user.name && this.user.email && this.user.password && this.user.phone)
       },
       isVaildSignup(){
-        return this.options.hasCertificated && this.isVaildFeild
+        return this.isVaildFeild
       }
-      
     },
     methods: {
       ...mapActions([
       'handleSignup',
-      'getToken',
     ]),
       async handleSignUp () {
         if (!this.isVaildFeild) {
@@ -150,8 +140,11 @@ export default {
         const result = await this.$store.dispatch("handleSignup", payload)
         if (result == 0) {
           this.options.isOpenError = true
+        } else {
+          this.$router.push('/certification')
         }
       },
+
       handleCertificate() {
         // this.$router.push('/authResult')
         const apiKey = "89358db6-c434-40fe-9ae2-a2254dc1506a"
@@ -160,8 +153,6 @@ export default {
         tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id="+apiKey+"&redirect_uri=https://finextend.herokuapp.com/authResult&scope=login inquiry transfer&state=12345678901234567890123456789012&auth_type=0"
 
         this.options.hasCertificated = true
-
-      },
     },
 
 }

@@ -1,3 +1,3 @@
 window.applicationSettings = {
-    "DB_ENDPOINT": "http://localhost:3000"
+    "DB_ENDPOINT": "https://finextend.herokuapp.com"
 }

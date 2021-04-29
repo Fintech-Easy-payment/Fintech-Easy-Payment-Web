@@ -6,10 +6,11 @@ const { DB_ENDPOINT } = applicationSettings;
 
 export const dbApi = {
     signup: (payload) => axios.post(`${DB_ENDPOINT}/api/signup`, payload),
+    auth: (code) => axios.post(`${DB_ENDPOINT}/api/auth`, code),
     signin: (payload) => axios.post(`${DB_ENDPOINT}/api/signin`, payload),
     test: () => axios.get(`${DB_ENDPOINT}/`),
-    userData: () => axios.get(`${DB_ENDPOINT}/api/`),
-    accountData: () => axios.post(`${DB_ENDPOINT}/api/`),
+    accountData: () => axios.get(`${DB_ENDPOINT}/api/account`),
+    withdrawData: () => axios.post(`${DB_ENDPOINT}/api/withdraw`),
     // postToken: (payload) => axios.post(`https://testapi.openbanking.or.kr/oauth/2.0/token`,payload),
 }
 export const tokenApi = {
@@ -17,5 +18,11 @@ export const tokenApi = {
         headers: {
             'Content-Type' : 'application/x-www-form-urlencoded'
         }
-    })
+    }),
+    // testCertification: (payload) => axios.post('http://localhost:3000/api/token', payload, {
+    //     headers: {
+    //         'Content-Type' : 'application/x-www-form-urlencoded'
+    //     }
+    // })
+
 }

@@ -90,6 +90,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+
+
 export default {
     components: {
       BaseDialog: () => import('../common/baseDialog'),
@@ -144,6 +146,7 @@ export default {
       },
       
     },
+
 }
 </script>
 
@@ -151,10 +154,12 @@ export default {
 .signup-button {
   margin-bottom: 1rem;
 }
+
 .login-options {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   margin-top: 1rem;
 }
+
 </style>

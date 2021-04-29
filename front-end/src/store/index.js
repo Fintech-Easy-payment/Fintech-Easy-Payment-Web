@@ -70,6 +70,15 @@ export const store = new Vuex.Store({
       })
       return result
     },
+    async postAuthCode({ state }) {
+      const code = state.code
+      const result = await dbApi.auth(code).then(({ data }) => {
+        console.log(data)
+        return data
+      })
+      console.log(result)
+      
+    },
 
     // async postToken({ state, dispatch }, ) {
     //   // this.$router.push('/authResult')

@@ -253,7 +253,7 @@ app.post('/api/withdraw', auth, function (req, res) {
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "M202111589" + countnum; // 이용기과번호 본인것 입력
   var now = new Date();
-  var sql = "SELECT * FROM user WHERE id = ?"
+  var sql = "SELECT * FROM user WHERE user_id = ?"
 
   connection.query(sql, [userId], function (err, result) {
     if (err) {

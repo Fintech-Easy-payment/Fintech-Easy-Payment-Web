@@ -1,15 +1,21 @@
 <template>
   <div class="container">
+    <div
+      class="certification-text"  
+      v-text="'(인증하기) 버튼을 눌러 인증을 진행해주세요!'"
+    />
       <v-btn 
-        v-text="'Certificate'"
+        v-text="'인증하기'"
         class="signup-button"
         block="block" 
+        x-large
         @click="handleCertificate()"
       />
       <div class="verficaton-container">
         <v-btn 
         v-text="'인증이 완료되었다면 클릭해주세요'"
         class="signup-button"
+        x-large
         @click="goToPayment()"
       />
       </div>
@@ -75,8 +81,18 @@ export default {
 
 <style lang="scss" scoped>
   .container {
+    .certification-text {
+      font-size: 16px;
+      font-weight: bold;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
     .signup-button {
       margin: 2rem 0;
+    }
+    .verficaton-container {
+      display: flex;
+      justify-content: center;
     }
   }
 </style>

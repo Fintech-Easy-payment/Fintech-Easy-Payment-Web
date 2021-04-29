@@ -45,6 +45,27 @@
             </v-card>
           </v-container>
         </v-main>
+        <div 
+        class="error-dialog"
+      >
+        <BaseDialog
+          :is-dialog-open="isOpenDialog"
+        >
+          <template #content>
+            <div 
+              v-text="isSuccessed ? '결제가 완료되었습니다.':'결제에 실패했습니다.'"
+            />
+          </template>
+          <template #footer>
+            <div
+              @click="isOpenDialog = false"
+            >
+              확인
+            </div>
+          </template>
+        </BaseDialog>
+
+      </div>
       </v-app>
   </div>
 </template>
@@ -54,12 +75,17 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'paymentPage',
+  components: {
+    BaseDialog: () => import('../common/baseDialog'),
+  },
   data: () => ({
     // product: userData.productName,
     // withdrawList: userData.accountList,
     // amount: userData.productPrice,
     depositNum: '98769876',
     selectedValue: null,
+    isOpenDialog: false,
+    isSuccessed: false,
   }),
   computed: {
     ...mapState([
@@ -87,6 +113,13 @@ export default {
       console.log(payload);
       const result = this.$store.dispatch('postPaymentData',payload)
       console.log(result);
+      if (result == 2){
+        this.isOpenDialog = true
+        this.isSuccessed = true
+      } else {
+        this.isOpenDialog = true
+        this.isSuccessed = false
+      }
 
       
     },

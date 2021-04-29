@@ -3,8 +3,7 @@
     <v-app dark="dark">
       <v-main>
         <v-container fill-height="fill-height">
-          <v-layout align-center="align-center" justify-center="justify-center">
-            <v-form>
+            <v-form class="layout-form">
                 <div 
                   v-text="'Crate a new account'"
                 />
@@ -60,7 +59,6 @@
                 />
               </div>
               </v-form>
-            </v-layout>
         </v-container>
       </v-main>
       <div 
@@ -154,7 +152,9 @@ export default {
 .signup-button {
   margin-bottom: 1rem;
 }
-
+.layout-form {
+  width: 100%;
+}
 .login-options {
   display: flex;
   align-items: center;

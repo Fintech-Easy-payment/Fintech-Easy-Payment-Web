@@ -181,6 +181,7 @@ app.post('/api/signin', function (req, res) {
 
 app.post('/api/account', auth, function (req, res) {
   var user_id = req.decoded.userId;
+  var account_result = new Object();
 
   var sql = "SELECT * FROM user WHERE user_id=?"
   connection.query(sql, [user_id], function (err, result) {
@@ -209,10 +210,8 @@ app.post('/api/account', auth, function (req, res) {
         else {
           var requestResult = JSON.parse(body);
           var res_list = requestResult.res_list;
-          var account_result = new Object();
-          account_result.account_list = []
-
           console.log(res_list)
+          
           for (i = 0; i < res_list.length; i++) {
             res_one = res_list[i]
             account_result.account_list.push({
@@ -251,13 +250,13 @@ app.post('/api/withdraw', auth, function (req, res) {
 
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "M202111589" + countnum; // 이용기관번호 본인것 입력
+  
   function pad2(n) { return n < 10 ? '0' + n : n }
   var date = new Date();
-
   var sdate = date.getFullYear().toString() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate())
   var edate = date.getFullYear().toString() + '-' + pad2(date.getMonth() + 2) + '-' + pad2(date.getDate())
-  var sql = "SELECT * FROM user WHERE user_id = ?"
 
+  var sql = "SELECT * FROM user WHERE user_id = ?"
   connection.query(sql, [userId], function (err, result) {
     if (err) {
       console.error(err);

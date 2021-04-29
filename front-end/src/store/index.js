@@ -65,7 +65,7 @@ export const store = new Vuex.Store({
       // const userSeqNum = Cookies.get('certification-user-seq-num')
 
       console.log(name,password,email,phone);
-      const result = await dbApi.signup(payload).then((data) => {
+      const result = await dbApi.signup(payload).then(({ data }) => {
         if (data !== 0) {
           sessionStorage.setItem('temporary-token', data)
         }

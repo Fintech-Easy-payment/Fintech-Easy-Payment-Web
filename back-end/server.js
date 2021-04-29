@@ -251,9 +251,11 @@ app.post('/api/withdraw', auth, function (req, res) {
 
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "M202111589" + countnum; // 이용기관번호 본인것 입력
-  var now = new Date();
-  var sdate = String(now.getFullYear()) +'-'+ String(now.getMonth()+1) +'-'+ String(now.getDate())
-  var edate = String(now.getFullYear()) +'-'+ String(now.getMonth()+2) +'-'+ String(now.getDate())
+  function pad2(n) { return n < 10 ? '0' + n : n }
+  var date = new Date();
+
+  var sdate = date.getFullYear().toString() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate())
+  var edate = date.getFullYear().toString() + '-' + pad2(date.getMonth() + 2) + '-' + pad2(date.getDate())
   var sql = "SELECT * FROM user WHERE user_id = ?"
 
   connection.query(sql, [userId], function (err, result) {
@@ -276,11 +278,10 @@ app.post('/api/withdraw', auth, function (req, res) {
           "dps_print_content": "이용권연장",
           "fintech_use_num": fin_use_num,
           "tran_amt": price,
-          "tran_dtime": String(now.getFullYear()) + String(now.getMonth()+1) + String(now.getDate()) + String(now.getHours) + String(now.getMinutes) + String(now.getSeconds),//"20200424131111",
+          "tran_dtime": date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()),//"20200424131111",
           "req_client_name": "홍길동",
           "req_client_num": "HONGGILDONG1234",
           "transfer_purpose": "TR",
-
         }
       }
       request(option, function (err, response, body) {
@@ -290,16 +291,16 @@ app.post('/api/withdraw', auth, function (req, res) {
         }
         else {
           console.log(body);
-            var sql = "INSERT INTO user_product (user_id, product_id, start_date, exr_date) VALUES (?,?,?,?)"
-            connection.query(sql, [userId, productId, sdate, edate], function (err, result) {
-              if (err) {
-                console.error(err);
-                res.json(1) //  DB 에러
-              }
-              else {
-                res.json(2) // 출금 성공
-              }
-            })
+          var sql = "INSERT INTO user_product (user_id, product_id, start_date, exr_date) VALUES (?,?,?,?)"
+          connection.query(sql, [userId, productId, sdate, edate], function (err, result) {
+            if (err) {
+              console.error(err);
+              res.json(1) //  DB 에러
+            }
+            else {
+              res.json(2) // 출금 성공
+            }
+          })
         }
       })
     }

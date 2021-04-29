@@ -103,11 +103,9 @@ export const store = new Vuex.Store({
       return result
     },
     async postPaymentData({ state }, payload) {
-      const {
-        fintechUseNum,
-      } = payload
+      
       const data = {
-        fin_use_num: fintechUseNum,
+        fin_use_num: payload,
         price: state.userData.productPrice,
         product_id: state.userData.productId,
         product_name: state.userData.productName

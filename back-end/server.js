@@ -210,7 +210,7 @@ app.post('/api/account', auth, function (req, res) {
         }
         else {
           var requestResult = JSON.parse(body);
-          var res_list = requestResult.res_list | [];
+          var res_list = requestResult.res_list;
           var account_result = new Object();
           account_result.account_list = []
 

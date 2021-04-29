@@ -1,8 +1,5 @@
 <template>
    <div>
-       {{accessToken}}
-       {{refreshToken}}
-       {{userNum}}
        {{ $route.query.code }}
    </div>
 </template>
@@ -23,9 +20,10 @@ export default {
   mounted () {
       const code = this.$route.query.code
       this.$store.commit('GETCODE', code)
-      this.$store.dispatch('postToken')
-      console.log(this.$store.state)
-      setTimeout('window.close()', 10000)
+      // this.$store.dispatch('postToken')
+      // console.log(this.$store.state)
+      
+      // setTimeout('window.close()', 10000)
   },
   methods: {
     ...mapActions([

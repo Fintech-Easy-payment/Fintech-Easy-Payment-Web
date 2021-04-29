@@ -140,7 +140,7 @@ export default {
         };
         const result = await this.$store.dispatch("handleSignin", payload)
         console.log(result);
-        if (result !== 0) {
+        if (result == 0 || result == 3 || result == 2) {
           this.options.isOpenError = true
         } else {
           router.push("/payment")

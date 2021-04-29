@@ -35,6 +35,11 @@ const router = new VueRouter({
       name: 'authResult',
       component: () => import('../components/auth/certificationResult.vue')
     },
+    {
+      path: '/certification',
+      name: 'Certification',
+      component: () => import('../components/auth/phoneCertification.vue')
+    },
 
     { path: "*", component: NotFound },
   ],

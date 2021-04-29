@@ -14,14 +14,21 @@ export const store = new Vuex.Store({
     userSeqNum: '',
     code: '',
     userData: {
-      accountList: {
-        fintechUseNum: '',
-        bankName: '',
-        accountNum: '',
-      },
-      productName: '',
-      productPrice: '',
-      productId: '',
+      accountList: [
+        {
+          fintechUseNum: '131231',
+          bankName: '기업',
+          accountNum: '6786876867',
+        },
+        {
+          fintechUseNum: '978978979',
+          bankName: '기업',
+          accountNum: '4353453',
+        },
+      ],
+      productName: 'asdf',
+      productPrice: '10000',
+      productId: '1',
     }
   },
   getters: {},
@@ -39,20 +46,16 @@ export const store = new Vuex.Store({
       console.log(state);
     },
     GETUSERDATA(state, payload) {
-      state.userData.accountList = payload.account_list.
+      state.userData.accountList = payload.account_list
+      state.userData.productName = payload.product_name
+      state.userData.productPrice = payload.product_price
+      state.userData.productId = payload.product_id
 
-      state.refreshToken = payload.refresh_token
-      state.userSeqNum = payload.user_seqnum
       console.log(state);
     },
   },
   actions: {
-    // updateToken({ commit }, payload) {
-    //   commit('GETTOKEN', payload)
-    //   Cookies.set('certification-access-token', payload.access_token)
-    //   Cookies.set('certification-refresh-token', payload.refresh_token)
-    //   Cookies.set('certification-user-seq-num', payload.user_seqnum)
-    // },
+
     async handleSignup(_, payload) {
       const {
         name,
@@ -60,16 +63,14 @@ export const store = new Vuex.Store({
         email,
         phone
       } = payload
-      // const accessToken = Cookies.get('certification-access-token')
-      // const refreshToken = Cookies.get('certification-refresh-token')
-      // const userSeqNum = Cookies.get('certification-user-seq-num')
 
       console.log(name,password,email,phone);
-      const result = await dbApi.signup(payload).then((data) => {
-        if (data.data !== 0) {
-          sessionStorage.setItem('temporary-token', data.data)
+      const result = await dbApi.signup(payload).then(({ data }) => {
+        console.log(data);
+        if (data !== 0) {
+          sessionStorage.setItem('temporary-token', data)
         }
-        return data.data
+        return data
       })
       return result
     },
@@ -81,52 +82,38 @@ export const store = new Vuex.Store({
       } = payload
       
       console.log(password, email)
-      // const result = await dbApi.test().then((data) => {
-      //   return data.data
-      // })
+
       const result = await dbApi.signin(payload).then(({ data }) => {
         console.log(data);
-        if (data.data !== 2 && data.data !== 3) {
-          sessionStorage.setItem('temporary-token', data.data)
+        if (data !== 2 && data !== 3) {
+          sessionStorage.setItem('temporary-token', data)
         }
         return data
       })
       return result
     },
-   
 
-    // async postToken({ state, dispatch }, ) {
-    //   // this.$router.push('/authResult')
-    //   console.log(state.code)
-
-    //   const params = new URLSearchParams()
-
-    //   params.append('code', state.code)
-    //   params.append('client_id', "89358db6-c434-40fe-9ae2-a2254dc1506a")
-    //   params.append('client_secret', "4ada8450-c969-4af7-b622-c605f341f7d6")
-    //   params.append('redirect_uri', "https://finextend.he0rokuapp.com/authResult")
-    //   params.append('grant_type', "authorization_code")
-
-    //   const result = await tokenApi.testCertification(params)
-    //     .then(({ data }) => {
-    //       dispatch("updateToken", data)
-    //       return data
-    //     })
-
-    //   console.log(result)
-    // },
-
-    async getUserData() {
+    async getUserData({commit}) {
       const result = await dbApi.accountData().then((data) => {
         console.log(data);
+        commit('GETUSERDATA',data)
         return data
       })
       return result
     },
-    async postPaymentData(code) {
-      const result = await dbApi.withdrawData(code).then((data) => {
-        console.log(data);
-        return data
+    async postPaymentData({ state }, payload) {
+      const {
+        fintechUseNum,
+      } = payload
+      const data = {
+        fin_use_num: fintechUseNum,
+        price: state.userData.productPrice,
+        product_id: state.userData.productId,
+        product_name: state.userData.productName
+      }
+      const result = await dbApi.withdrawData(data).then((req) => {
+        console.log(req.data);
+        return req.data
       })
       return result
     },

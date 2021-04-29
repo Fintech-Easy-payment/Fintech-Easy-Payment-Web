@@ -66,7 +66,9 @@ export const store = new Vuex.Store({
 
       console.log(name,password,email,phone);
       const result = await dbApi.signup(payload).then(({ data }) => {
+
         console.log(data);
+
         if (data !== 0) {
           sessionStorage.setItem('temporary-token', data)
         }
@@ -82,7 +84,6 @@ export const store = new Vuex.Store({
       } = payload
       
       console.log(password, email)
-
       const result = await dbApi.signin(payload).then(({ data }) => {
         console.log(data);
         if (data !== 2 && data !== 3) {

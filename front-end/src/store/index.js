@@ -13,16 +13,6 @@ export const store = new Vuex.Store({
     refreshToken: '',
     userSeqNum: '',
     code: '',
-    userData: {
-      accountList: {
-        fintechUseNum: '',
-        bankName: '',
-        accountNum: '',
-      },
-      productName: '',
-      productPrice: '',
-      productId: '',
-    }
   },
   getters: {},
   mutations: {
@@ -34,13 +24,6 @@ export const store = new Vuex.Store({
     },
     GETTOKEN(state, payload) {
       state.accessToken = payload.access_token
-      state.refreshToken = payload.refresh_token
-      state.userSeqNum = payload.user_seqnum
-      console.log(state);
-    },
-    GETUSERDATA(state, payload) {
-      state.userData.accountList = payload.account_list.
-
       state.refreshToken = payload.refresh_token
       state.userSeqNum = payload.user_seqnum
       console.log(state);
@@ -87,7 +70,15 @@ export const store = new Vuex.Store({
       })
       return result
     },
-   
+    async postAuthCode({ state }) {
+      const code = state.code
+      const result = await dbApi.auth(code).then(({ data }) => {
+        console.log(data)
+        return data
+      })
+      console.log(result)
+      
+    },
 
     // async postToken({ state, dispatch }, ) {
     //   // this.$router.push('/authResult')
@@ -117,9 +108,8 @@ export const store = new Vuex.Store({
       })
       return result
     },
-    async postPaymentData(code) {
-      const result = await dbApi.withdrawData(code).then((data) => {
-        console.log(data);
+    async postPaymentData(payload) {
+      const result = await dbApi.withdrawData(payload).then((data) => {
         return data
       })
       return result

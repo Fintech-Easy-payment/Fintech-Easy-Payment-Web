@@ -6,7 +6,6 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
-import { dbApi } from '@/api.js'
 
 export default {
   name: "authResult",
@@ -18,17 +17,14 @@ export default {
   computed: {
     ...mapMutations(['GETTOKEN'])
   },
-  async mounted () {
+  mounted () {
       const code = this.$route.query.code
       this.$store.commit('GETCODE', code)
       console.log(this.$store.state.code);
-      await dbApi.auth(code).then(({ data }) => {
-        console.log(data)
-      })      
-    },
+      this.$store.dispatch('postAuthCode')
       // console.log(this.$store.state)
-      // setTimeout('window.close()', 10000)
-
+      setTimeout('window.close()', 10000)
+  },
   methods: {
     ...mapActions([
     'postToken',

@@ -56,13 +56,13 @@ export default {
   name: 'paymentPage',
   data: () => ({
     product: '3개월권',
-    withdrawList: ['기엄 : 12341234','98798723'],
+    withdrawList: ['12341234','98798723'],
     amount: '1000',
     depositNum: '98769876',
     selectedValue: null,
   }),
   mounted() {
-    // this.getPaymentData()
+    this.getPaymentData()
   },
   methods: {
     ...mapActions(['getUserData','postPaymentData']),

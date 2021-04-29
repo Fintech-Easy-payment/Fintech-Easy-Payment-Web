@@ -66,10 +66,10 @@ export const store = new Vuex.Store({
 
       console.log(name,password,email,phone);
       const result = await dbApi.signup(payload).then((data) => {
-        if (data.data !== 0) {
-          sessionStorage.setItem('temporary-token', data.data)
+        if (data !== 0) {
+          sessionStorage.setItem('temporary-token', data)
         }
-        return data.data
+        return data
       })
       return result
     },
@@ -82,12 +82,12 @@ export const store = new Vuex.Store({
       
       console.log(password, email)
       // const result = await dbApi.test().then((data) => {
-      //   return data.data
+      //   return data
       // })
       const result = await dbApi.signin(payload).then(({ data }) => {
         console.log(data);
-        if (data.data !== 2 && data.data !== 3) {
-          sessionStorage.setItem('temporary-token', data.data)
+        if (data !== 2 && data !== 3) {
+          sessionStorage.setItem('temporary-token', data)
         }
         return data
       })

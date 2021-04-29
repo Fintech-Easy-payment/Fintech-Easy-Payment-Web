@@ -89,7 +89,7 @@ export const store = new Vuex.Store({
       params.append('code', state.code)
       params.append('client_id', "89358db6-c434-40fe-9ae2-a2254dc1506a")
       params.append('client_secret', "4ada8450-c969-4af7-b622-c605f341f7d6")
-      params.append('redirect_uri', "http://localhost:8080/authResult")
+      params.append('redirect_uri', "https://finextend.herokuapp.com/authResult")
       params.append('grant_type', "authorization_code")
 
       const result = await tokenApi.testCertification(params)

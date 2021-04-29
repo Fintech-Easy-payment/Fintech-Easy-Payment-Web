@@ -262,18 +262,17 @@ app.post('/api/withdraw', auth, function (req, res) {
       throw err
     }
     else {
-      //console.log(result);
+      console.log(result);
       var option = {
         method: "POST",
         url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
         headers: {
-          Authorization: 'Bearer ' + result[0].accesstoken,
+          Authorization: 'Bearer ' + result[0].access_token,
           "Content-Type": "application/json"
         },
         json: {
           "bank_tran_id": transId,
           "cntr_account_type": "N",
-          // todo : 약정 계좌 번호 
           "cntr_account_num": "7832932596",
           "dps_print_content": "이용권연장",
           "fintech_use_num": fin_use_num,
@@ -291,19 +290,21 @@ app.post('/api/withdraw', auth, function (req, res) {
           res.json(0);
         }
         else {
-          console.log(body);
+          //console.log(body);
 
-          var sql = "INSERT INTO user_product (user_id, product_id, start_date, exr_date) VALUES (?,?,?,?)"
-          
-          connection.query(sql, [userId, productId, sdate, edate], function (err, result) {
-            if (err) {
-              console.error(err);
-              res.json(1) //  DB 에러
-            }
-            else {
-              res.json(2) // 출금 성공
-            }
-          })
+          if (body.rsp_code !== 'O0002'){
+            var sql = "INSERT INTO user_product (user_id, product_id, start_date, exr_date) VALUES (?,?,?,?)"
+            
+            connection.query(sql, [userId, productId, sdate, edate], function (err, result) {
+              if (err) {
+                console.error(err);
+                res.json(1) //  DB 에러
+              }
+              else {
+                res.json(2) // 출금 성공
+              }
+            })
+          }
         }
       })
     }

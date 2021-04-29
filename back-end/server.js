@@ -90,7 +90,7 @@ app.post('/api/signup', (req, res) => {
   })
 })
 
-app.get('/api/token', auth, (req, res) => {
+app.post('/api/token', auth, (req, res) => {
   var user_id = req.decoded.userId;
   var code = req.body.code;
   console.log(code);

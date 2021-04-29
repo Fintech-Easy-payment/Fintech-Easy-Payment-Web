@@ -95,7 +95,7 @@ export const store = new Vuex.Store({
     },
 
     async getUserData({commit}) {
-      const result = await dbApi.accountData().then(({ data }) => {
+      const result = await dbApi.accountData().then(( data ) => {
         console.log(data);
         commit('GETUSERDATA',data)
         return data

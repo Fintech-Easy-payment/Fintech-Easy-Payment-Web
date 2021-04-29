@@ -7,20 +7,20 @@
               <v-card-text>
                 <div class="payment__field">
                   <v-text-field
-                    :value=product
+                    :value="userData.productName"
                     label="상품"
                     class="payment__field--block"
                     readonly
                   />
                   <v-select
-                    :items="withdrawList"
+                    :items="accountLists"
                     :value="selectedValue"
                     label="출금계좌"
                     class="payment__field--block"
                     @change="handleSelect($event)"
                   />
                   <v-text-field
-                    :value=amount
+                    :value="userData.productPrice"
                     label="결제금액"
                     class="payment__field--block"
                     readonly
@@ -50,42 +50,48 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'paymentPage',
   data: () => ({
-    product: '3개월권',
-    withdrawList: ['기엄 : 12341234','98798723'],
-    amount: '1000',
+    // product: userData.productName,
+    // withdrawList: userData.accountList,
+    // amount: userData.productPrice,
     depositNum: '98769876',
     selectedValue: null,
   }),
-  mounted() {
-    // this.getPaymentData()
+  computed: {
+    ...mapState([
+      'userData',
+    ]),
+    accountLists() {
+      return this.userData.accountList.map((account) => {
+        return account.accountNum
+      })
+    },
   },
   methods: {
     ...mapActions(['getUserData','postPaymentData']),
     async getPaymentData(){
-      const result = await this.$store.dispatch("getUserData")
-      this.product = result.product
-      this.withdrawList = result.withdraw
-      this.amount = result.amount
-      this.depositNum = result.depositNum
+      await this.$store.dispatch("getUserData")
     },
     handlePayment(){
       console.log('a');
       //출금 open api
+      const accoutDataIndex = this.accountLists.findIndex(option => option === this.selectedValue)
+      console.log();
       const payload = {
-        withdrawNum :this.selectedValue
+        account_list : this.userData.accountList[accoutDataIndex]
       }
-      this.$store.dispatch('postPaymentData',payload)
+      console.log(payload);
+      const result = this.$store.dispatch('postPaymentData',payload)
+      console.log(result);
 
       
     },
     handleSelect (value) {
       this.selectedValue = value
-      // this.$emit('change', value)
       console.log(this.selectedValue)
     },
   },

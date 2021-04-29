@@ -15,7 +15,11 @@ export const dbApi = {
     }),
     signin: (payload) => axios.post(`${DB_ENDPOINT}/api/signin`, payload),
     test: () => axios.get(`${DB_ENDPOINT}/`),
-    accountData: () => axios.get(`${DB_ENDPOINT}/api/account`),
+    accountData: () => axios.post(`${DB_ENDPOINT}/api/account`, undefined, {
+        headers: {
+            'ourtoken' : sessionStorage.getItem('temporary-token')
+        }
+    }),
     withdrawData: () => axios.post(`${DB_ENDPOINT}/api/withdraw`),
 }
 export const tokenApi = {

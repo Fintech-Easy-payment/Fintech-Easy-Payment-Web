@@ -275,7 +275,7 @@ app.post('/api/withdraw', auth, function (req, res) {
         json: {
           "bank_tran_id": transId,
           "cntr_account_type": "N",
-          "cntr_account_num": "7832932596",
+          "cntr_account_num": "098709871234",
           "dps_print_content": "이용권연장",
           "fintech_use_num": fin_use_num, 
           "wd_print_content": "오픈뱅킹출금",

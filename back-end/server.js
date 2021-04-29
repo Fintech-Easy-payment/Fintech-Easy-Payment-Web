@@ -262,7 +262,6 @@ app.post('/api/withdraw', auth, function (req, res) {
       throw err
     }
     else {
-      console.log(result);
       var option = {
         method: "POST",
         url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
@@ -290,7 +289,7 @@ app.post('/api/withdraw', auth, function (req, res) {
           res.json(0);
         }
         else {
-          //console.log(body);
+          console.log(body);
 
           if (body.rsp_code !== 'O0002'){
             var sql = "INSERT INTO user_product (user_id, product_id, start_date, exr_date) VALUES (?,?,?,?)"

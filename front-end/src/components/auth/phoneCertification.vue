@@ -58,6 +58,7 @@ export default {
   methods: {
     ...mapActions([
     'postAuthCode',
+    'getUserData'
     ]),
     handleCertificate() {
       console.log(this.stateCode);
@@ -66,11 +67,12 @@ export default {
       const tmpWindow = window.open("about:blank");
       tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?response_type=code&client_id="+apiKey+"&redirect_uri=https://finextend.herokuapp.com/authResult&scope=login inquiry transfer&state=12345678901234567890123456789012&auth_type=0"
     },
-    goToPayment () {
+    async goToPayment () {
       this.code = this.stateCode      
       if (this.code == ''){
         this.isOpenDialog = false
       } else{
+        await this.$store.dispatch("getUserData")
         this.$router.push('/payment')
       }
       

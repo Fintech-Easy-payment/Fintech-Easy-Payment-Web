@@ -6,7 +6,7 @@ const { DB_ENDPOINT } = applicationSettings;
 
 export const dbApi = {
     signup: (payload) => axios.post(`${DB_ENDPOINT}/api/signup`, payload),
-    // signup: (payload) => axios.post(`${DB_ENDPOINT}/api/signup`, payload),
+    auth: (code) => axios.post(`${DB_ENDPOINT}/api/auth`, code),
     signin: (payload) => axios.post(`${DB_ENDPOINT}/api/signin`, payload),
     test: () => axios.get(`${DB_ENDPOINT}/`),
     accountData: () => axios.get(`${DB_ENDPOINT}/api/account`),

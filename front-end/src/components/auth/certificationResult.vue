@@ -20,10 +20,10 @@ export default {
   mounted () {
       const code = this.$route.query.code
       this.$store.commit('GETCODE', code)
-      // this.$store.dispatch('postToken')
+      console.log(this.$store.state.code);
+      this.$store.dispatch('postAuthCode')
       // console.log(this.$store.state)
-      
-      // setTimeout('window.close()', 10000)
+      setTimeout('window.close()', 10000)
   },
   methods: {
     ...mapActions([

@@ -71,9 +71,9 @@
           :is-dialog-open="options.isOpenError"
         >
           <template #content>
-            <div>
-              이메일과 비밀번호를 확인해 주세요.
-            </div>
+            <div
+              v-text="errorMessage"
+            />
           </template>
           <template #footer>
             <div
@@ -115,6 +115,7 @@ export default {
             isOpenError: false,
             hasError: false,
         },  
+        errorMessage: '',
     }),
     computed: {
       feildRule () {
@@ -140,7 +141,11 @@ export default {
         };
         const result = await this.$store.dispatch("handleSignin", payload)
         console.log(result);
-        if (result == 0 || result == 3 || result == 2) {
+        if (result == 0 || result == 2) {
+          this.errorMessage = "'아이디와 비밀번호를 확인해주세요!"
+          this.options.isOpenError = true
+        } else if (result == 3 ) {
+          this.errorMessage = "가입되지 않은 정보입니다."
           this.options.isOpenError = true
         } else {
           router.push("/payment")

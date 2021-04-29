@@ -123,7 +123,6 @@ export default {
     methods: {
       ...mapActions([
       'handleSignup',
-      'getUserData'
     ]),
       async handleSignUp () {
         if (!this.isVaildFeild) {
@@ -140,7 +139,6 @@ export default {
         if (result == 0) {
           this.options.isOpenError = true
         } else {
-          await this.$store.dispatch("getUserData")
           this.$router.push('/certification')
         }
       },

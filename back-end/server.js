@@ -276,7 +276,7 @@ app.post('/api/withdraw', auth, function (req, res) {
           "dps_print_content": "이용권연장",
           "fintech_use_num": fin_use_num,
           "tran_amt": price,
-          "tran_dtime": String(now.getFullYear()) + String(now.getMonth()+1) + String(now.getDate()),//"20200424131111",
+          "tran_dtime": String(now.getFullYear()) + String(now.getMonth()+1) + String(now.getDate()) + String(now.getHours) + String(now.getMinutes) + String(now.getSeconds),//"20200424131111",
           "req_client_name": "홍길동",
           "req_client_num": "HONGGILDONG1234",
           "transfer_purpose": "TR",
@@ -290,10 +290,7 @@ app.post('/api/withdraw', auth, function (req, res) {
         }
         else {
           console.log(body);
-
-          if (body.rsp_code !== 'O0002'){
             var sql = "INSERT INTO user_product (user_id, product_id, start_date, exr_date) VALUES (?,?,?,?)"
-            
             connection.query(sql, [userId, productId, sdate, edate], function (err, result) {
               if (err) {
                 console.error(err);
@@ -303,7 +300,6 @@ app.post('/api/withdraw', auth, function (req, res) {
                 res.json(2) // 출금 성공
               }
             })
-          }
         }
       })
     }

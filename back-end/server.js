@@ -59,8 +59,6 @@ app.post('/api/signup', (req, res) => {
       throw err;
     }
     else {
-      res.json(1) // 회원가입 성공
-      
       var sql = "SELECT * from user WHERE phone=?"
       connection.query(sql, [phone], function(err, result){
         if (err) {

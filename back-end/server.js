@@ -253,6 +253,8 @@ app.post('/api/withdraw', auth, function (req, res) {
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "M202111589" + countnum; // 이용기과번호 본인것 입력
   var now = new Date();
+  var sdate = String(now.getFullYear()) +'-'+ String(now.getMonth()+1) +'-'+ String(now.getDate())
+  var edate = String(now.getFullYear()) +'-'+ String(now.getMonth()+2) +'-'+ String(now.getDate())
   var sql = "SELECT * FROM user WHERE user_id = ?"
 
   connection.query(sql, [userId], function (err, result) {
@@ -277,7 +279,7 @@ app.post('/api/withdraw', auth, function (req, res) {
           "dps_print_content": "이용권연장",
           "fintech_use_num": fin_use_num,
           "tran_amt": price,
-          "tran_dtime": now.format("%Y%m%d%H%M%S"),//"20200424131111",
+          "tran_dtime": String(now.getFullYear()) + String(now.getMonth()+1) + String(now.getDate()),//"20200424131111",
           "req_client_name": "홍길동",
           "req_client_num": "HONGGILDONG1234",
           "transfer_purpose": "TR",
@@ -293,9 +295,8 @@ app.post('/api/withdraw', auth, function (req, res) {
           console.log(body);
 
           var sql = "INSERT INTO user_product (user_id, prodcut_id, start_date, end_date) VALUES (?,?,?,?)"
-          var oneMonthLater = new Date(now.setMonth(now.getMonth() + 1))
-
-          connection.query(sql, [userId, prodcutId, now.format("%Y-%m-%d"), oneMonthLater].format("%Y-%m-%d"), function (err, result) {
+          
+          connection.query(sql, [userId, prodcutId, sdate, edate], function (err, result) {
             if (err) {
               console.error(err);
               res.json(1) //  DB 에러

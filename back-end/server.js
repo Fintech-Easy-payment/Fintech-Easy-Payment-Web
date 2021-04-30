@@ -54,6 +54,7 @@ app.post('/api/signup', (req, res) => {
   var phone = req.body.phone;
   var email = req.body.email;
   var password = req.body.password;
+  console.log('회원가입 성공');
   console.log(name, phone, email, password);
   var sql = "UPDATE user SET email=?, password=? WHERE phone=?";
   connection.query(sql, [email, password, phone], function (err, result) {
@@ -80,6 +81,7 @@ app.post('/api/signup', (req, res) => {
               subject: 'user.login.info'
             },
             function (err, token) {
+              console.log('로그인 토큰 발행')
               console.log(token)
               res.json(token) // 로그인 성공 -> sessionStorage에 token 저장
             }
@@ -93,7 +95,6 @@ app.post('/api/signup', (req, res) => {
 app.post('/api/token', auth, (req, res) => {
   var user_id = req.decoded.userId;
   var code = req.body.code;
-  console.log(code);
   var option = {
     method: "POST",
     url: "https://testapi.openbanking.or.kr/oauth/2.0/token",
@@ -137,7 +138,6 @@ app.post('/api/token', auth, (req, res) => {
 app.post('/api/signin', function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
-  console.log(email, password)
   var sql = "SELECT * FROM user WHERE email = ?";
   connection.query(sql, [email], function (err, result) {
     if (err) {
@@ -146,7 +146,6 @@ app.post('/api/signin', function (req, res) {
       throw err;
     }
     else {
-      console.log(result);
       if (result.length == 0) {
         res.json(3) // 이메일 없음
       }
@@ -166,6 +165,7 @@ app.post('/api/signin', function (req, res) {
               subject: 'user.login.info'
             },
             function (err, token) {
+              console.log('로그인 토큰 발행')
               console.log(token)
               res.json(token) // 로그인 성공 -> sessionStorage에 token 저장
             }
@@ -181,8 +181,6 @@ app.post('/api/signin', function (req, res) {
 
 app.post('/api/account', auth, function (req, res) {
   var user_id = req.decoded.userId;
-
-  console.log(user_id);
 
   var sql = "SELECT * FROM user WHERE user_id=?"
   connection.query(sql, [user_id], function (err, result) {
@@ -214,6 +212,7 @@ app.post('/api/account', auth, function (req, res) {
           var account_result = new Object();
           account_result.account_list = []
 
+          console.log('계좌 리스트')
           console.log(res_list)
           for (i = 0; i < res_list.length; i++) {
             res_one = res_list[i]
@@ -231,7 +230,6 @@ app.post('/api/account', auth, function (req, res) {
               throw err;
             }
             else {
-              console.log(result)
               account_result.product_id = result[0].product_id;
               account_result.product_name = result[0].product_name;
               account_result.product_price = result[0].price;
@@ -268,7 +266,6 @@ app.post('/api/withdraw', auth, function (req, res) {
       throw err
     }
     else {
-      console.log(result[0].access_token);
       var option = {
         method: "POST",
         url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",

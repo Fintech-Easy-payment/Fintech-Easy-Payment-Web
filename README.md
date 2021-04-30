@@ -1,6 +1,6 @@
 # 간편 이용권 연장 서비스
 이용권 만료가 임박한 고객의 간편한 연장을 위한 SMS발송 및 오픈뱅킹 서비스   
-[금융결제원 오픈API 개발자사이트](https://developers.kftc.or.kr/dev)에서 제공하는 OpenAPI를 이용
+[금융결제원 오픈API 개발자사이트](https://developers.kftc.or.kr/dev)에서 제공하는 오픈뱅킹공동업무 OpenAPI를 이용
 
 ## Process
 > ### 1. SMS수신

@@ -60,7 +60,6 @@ app.post('/api/signup', (req, res) => {
     if (!result[0]) {
       console.error(err);
       res.json(0); // 회원가입 실패
-      throw err;
     }
     else {
       var sql = "SELECT * from user WHERE phone=?"
@@ -68,7 +67,6 @@ app.post('/api/signup', (req, res) => {
         if (!result[0]) {
           console.error(err);
           res.json(0); // 회원가입 실패
-          throw err;
         }
         else {
           var tokenKey = "f@i#n%tne#ckfhlafkd0102test!@#%"

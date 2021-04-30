@@ -20,14 +20,9 @@ export const dbApi = {
             'ourtoken' : sessionStorage.getItem('temporary-token')
         }
     }),
-    withdrawData: () => axios.post(`${DB_ENDPOINT}/api/withdraw`),
-}
-export const tokenApi = {
-    testCertification: (payload) => axios.post('https://testapi.openbanking.or.kr/oauth/2.0/token', payload, {
+    withdrawData: (payload) => axios.post(`${DB_ENDPOINT}/api/withdraw`, payload, {
         headers: {
-            'Content-Type' : 'application/x-www-form-urlencoded'
+            'ourtoken' : sessionStorage.getItem('temporary-token')
         }
     }),
-
-
 }

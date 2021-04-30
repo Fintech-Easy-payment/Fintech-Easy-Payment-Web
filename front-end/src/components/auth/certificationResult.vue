@@ -25,7 +25,7 @@ export default {
       await dbApi.auth(code).then(({ data }) => {
         console.log(data)
       })      
-      setTimeout('window.close()', 2000)
+      //setTimeout('window.close()', 2000)
     },
   methods: {
     ...mapActions([

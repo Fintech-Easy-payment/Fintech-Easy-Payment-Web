@@ -57,18 +57,14 @@ app.post('/api/signup', (req, res) => {
   console.log(name, phone, email, password);
   var sql = "UPDATE user SET email=?, password=? WHERE phone=?";
   connection.query(sql, [email, password, phone], function (err, result) {
-    if (!result[0]) {
-      console.error(err);
+    if (err) {
       res.json(0); // 회원가입 실패
-      throw err;
     }
     else {
       var sql = "SELECT * from user WHERE phone=?"
       connection.query(sql, [phone], function (err, result) {
         if (!result[0]) {
-          console.error(err);
           res.json(0); // 회원가입 실패
-          throw err;
         }
         else {
           var tokenKey = "f@i#n%tne#ckfhlafkd0102test!@#%"

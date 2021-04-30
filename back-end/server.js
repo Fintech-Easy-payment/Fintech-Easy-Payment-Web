@@ -41,6 +41,10 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, '../front-end/dist/index.html'))
 })
 
+app.get('/payment', function (req, res) {
+  res.sendFile(path.join(__dirname, '../front-end/dist/index.html'))
+})
+
 app.post('/authTest', auth, function (req, res) {
   res.json(req.decoded);
 })
@@ -53,7 +57,7 @@ app.post('/api/signup', (req, res) => {
   console.log(name, phone, email, password);
   var sql = "UPDATE user SET email=?, password=? WHERE phone=?";
   connection.query(sql, [email, password, phone], function (err, result) {
-    if (err) {
+    if (!result[0]) {
       console.error(err);
       res.json(0); // 회원가입 실패
       throw err;
@@ -61,7 +65,7 @@ app.post('/api/signup', (req, res) => {
     else {
       var sql = "SELECT * from user WHERE phone=?"
       connection.query(sql, [phone], function (err, result) {
-        if (err) {
+        if (!result[0]) {
           console.error(err);
           res.json(0); // 회원가입 실패
           throw err;
@@ -252,6 +256,7 @@ app.post('/api/withdraw', auth, function (req, res) {
   var productId = req.body.product_id;
   console.log(req.body)
 
+
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "M202111589" + 'U' + countnum; // 이용기관번호 본인것 입력
   
@@ -267,6 +272,7 @@ app.post('/api/withdraw', auth, function (req, res) {
       throw err
     }
     else {
+      console.log(result[0].access_token);
       var option = {
         method: "POST",
         url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
@@ -277,25 +283,25 @@ app.post('/api/withdraw', auth, function (req, res) {
         json: {
           "bank_tran_id": transId,
           "cntr_account_type": "N",
-          "cntr_account_num": "098709871234",
+          "cntr_account_num": "100000000001",
           "dps_print_content": "이용권연장",
           "fintech_use_num": fin_use_num, 
-          "wd_print_content": "오픈뱅킹출금",
+          "wd_print_content": "이용권연장",
           "tran_amt": price,
           "tran_dtime": date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()),//"20200424131111",
           "req_client_name": "홍길동",
-          "req_client_fintech_use_num" : "120211158988932126772153",
+          "req_client_fintech_use_num" : fin_use_num,
           "req_client_num": "HONGGILDONG1234",
           "transfer_purpose": "TR",
-          "recv_client_name": "헬스장",
+          "recv_client_name": "한지예",
           "recv_client_bank_code": "097",
-          "recv_client_account_num": "7832932596"
+          "recv_client_account_num": "100000000001"
         }
       }
       request(option, function (err, response, body) {
         if (err) {
           console.error(err);
-          res.json(0);
+          res.json(0); // API 에러
         }
         else {
           console.log(body);
@@ -303,7 +309,7 @@ app.post('/api/withdraw', auth, function (req, res) {
           connection.query(sql, [userId, productId, sdate, edate], function (err, result) {
             if (err) {
               console.error(err);
-              res.json(1) //  DB 에러
+              res.json(1) // DB에 데이터 삽입이 안됐을 때
             }
             else {
               res.json(2) // 출금 성공

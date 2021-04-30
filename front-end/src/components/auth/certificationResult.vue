@@ -25,10 +25,8 @@ export default {
       await dbApi.auth(code).then(({ data }) => {
         console.log(data)
       })      
+      setTimeout('window.close()', 2000)
     },
-      // console.log(this.$store.state)
-      // setTimeout('window.close()', 10000)
-
   methods: {
     ...mapActions([
     'postToken',

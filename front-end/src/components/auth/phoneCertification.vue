@@ -69,7 +69,7 @@ export default {
     },
     async goToPayment () {
       this.code = this.stateCode      
-      if (this.code == ''){
+      if (!this.code){
         this.isOpenDialog = false
       } else{
         await this.$store.dispatch("getUserData")

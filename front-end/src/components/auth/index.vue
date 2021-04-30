@@ -100,63 +100,59 @@ import { mapActions } from 'vuex'
 
 
 export default {
-    components: {
-      BaseDialog: () => import('../common/baseDialog'),
-      // SubmitButton: () => import('../common/SubmitButton'),
-    },
-    data: () => ({
-        user: {
-            email: '',
-            password: '',
-        },
-        options: {
-            isLoggingIn: true,
-            isEmptyFeild: false,
-            isOpenError: false,
-            hasError: false,
-        },  
-        errorMessage: '',
-    }),
-    computed: {
-      feildRule () {
-        const errorMessage = 'This field is required'
-        return [val => (val || '').length > 0 || errorMessage]
+  name: "LoginMain",
+  components: {
+    BaseDialog: () => import('../common/baseDialog'),
+  },
+  data: () => ({
+      user: {
+          email: '',
+          password: '',
       },
-      isVaildFeild(){
-        return (this.user.email && this.user.password)
+      options: {
+          isLoggingIn: true,
+          isEmptyFeild: false,
+          isOpenError: false,
+          hasError: false,
+      },  
+      errorMessage: '',
+  }),
+  computed: {
+    feildRule () {
+      const errorMessage = 'This field is required'
+      return [val => (val || '').length > 0 || errorMessage]
+    },
+    isVaildFeild(){
+      return (this.user.email && this.user.password)
+    }
+    
+  },
+  methods: {
+    ...mapActions([
+    'handleSignin',
+    'getUserData'
+  ]),
+    async handleSignIn () {
+      if (!this.feildRule) {
+        this.options.hasError = true
       }
-      
-    },
-    methods: {
-      ...mapActions([
-      'handleSignin',
-      'getUserData'
-    ]),
-      async handleSignIn () {
-        if (!this.feildRule) {
-          this.options.hasError = true
-        }
-        const payload = {
-          password: this.user.password,
-          email: this.user.email,
-        };
-        const result = await this.$store.dispatch("handleSignin", payload)
-        console.log(result);
-        if (result == 0 || result == 2) {
-          this.errorMessage = "'아이디와 비밀번호를 확인해주세요!"
-          this.options.isOpenError = true
-        } else if (result == 3 ) {
-          this.errorMessage = "가입되지 않은 정보입니다."
-          this.options.isOpenError = true
-        } else {
-          await this.$store.dispatch("getUserData")
-          router.push("/payment")
-        }
-      },
-      handleError() {
+      const payload = {
+        password: this.user.password,
+        email: this.user.email,
+      };
+      const result = await this.$store.dispatch("handleSignin", payload)
+      if (result == 0 || result == 2) {
+        this.errorMessage = "아이디와 비밀번호를 확인해주세요!"
+        this.options.isOpenError = true
+      } else if (result == 3 ) {
+        this.errorMessage = "가입되지 않은 정보입니다."
+        this.options.isOpenError = true
+      } else {
+        await this.$store.dispatch("getUserData")
+        router.push("/payment")
       }
     },
-
+  },
 }
 </script>
 

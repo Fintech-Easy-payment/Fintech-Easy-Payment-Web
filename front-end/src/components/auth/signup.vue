@@ -69,7 +69,7 @@
         >
           <template #content>
             <div>
-              이미 가입된 정보입니다.
+              회원가입에 실패하셨습니다.
             </div>
           </template>
           <template #footer>
@@ -136,6 +136,7 @@ export default {
           phone: this.user.phone,
         }
         const result = await this.$store.dispatch("handleSignup", payload)
+        console.log(result);
         if (result == 0) {
           this.options.isOpenError = true
         } else {

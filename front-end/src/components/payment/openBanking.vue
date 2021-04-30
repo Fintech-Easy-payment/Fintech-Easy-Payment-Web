@@ -82,7 +82,7 @@ export default {
     // product: userData.productName,
     // withdrawList: userData.accountList,
     // amount: userData.productPrice,
-    depositNum: '98769876',
+    depositNum: '100000000001',
     selectedValue: null,
     isOpenDialog: false,
     isSuccessed: false,
@@ -102,16 +102,12 @@ export default {
     async getPaymentData(){
       await this.$store.dispatch("getUserData")
     },
-    handlePayment(){
-      console.log('a');
+    async handlePayment(){
       //출금 open api
       const accoutDataIndex = this.accountLists.findIndex(option => option === this.selectedValue)
-      console.log(accoutDataIndex);
       const payload = this.userData.accountList[accoutDataIndex].fintech_use_num
       
-      console.log(payload);
-      const result = this.$store.dispatch('postPaymentData',payload)
-      console.log(result);
+      const result = await this.$store.dispatch('postPaymentData',payload)
       if (result == 2){
         this.isOpenDialog = true
         this.isSuccessed = true
@@ -119,12 +115,9 @@ export default {
         this.isOpenDialog = true
         this.isSuccessed = false
       }
-
-      
     },
     handleSelect (value) {
       this.selectedValue = value
-      console.log(this.selectedValue)
     },
   },
 
@@ -142,9 +135,7 @@ export default {
   &__button {
     width: 100%;
     margin-bottom: 2rem;
-
   }
-
 }
 
 </style>

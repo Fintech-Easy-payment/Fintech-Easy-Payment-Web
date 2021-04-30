@@ -20,7 +20,6 @@
 - Frontend : Vue.js
 - Database : Mysql
 
-***
 ## Members
 |  <center>Name</center> |  <center>Position</center> |  <center>Github</center> |
 |:--------:|:--------:|:--------:|

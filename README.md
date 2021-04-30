@@ -23,6 +23,6 @@
 ## Members
 |  <center>Name</center> |  <center>Position</center> |  <center>Github</center> |
 |:--------:|:--------:|:--------:|
-| 김수진 | <center>Frontend</center> |[Suzin](https://github.com/sujinee0010)|
+| 김수진 | <center>Backend</center> |[Suzin](https://github.com/sujinee0010)|
 | 이다해 | <center>Backend</center> |[dahaelee](https://github.com/dahaelee)|
-| 한지예 | <center>Backend</center> |[jiyeahh](https://github.com/jiyeahh)|
+| 한지예 | <center>Frontend</center> |[jiyeahh](https://github.com/jiyeahh) |

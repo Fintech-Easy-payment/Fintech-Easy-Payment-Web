@@ -19,7 +19,7 @@
 - API Server : node.js
 - SMS Server : Django, CeleryBeat, Redis
 - Frontend : Vue.js
-- Database : Mysql
+- Database : MySQL
 
 ## Members
 |  <center>Name</center> |  <center>Position</center> |  <center>Github</center> |
